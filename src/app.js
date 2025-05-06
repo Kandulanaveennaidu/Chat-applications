@@ -10,6 +10,10 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 
+app.get('/', (req, res) => {
+    res.send('Backend is running ✅');
+  });
+
 app.use('/api', messageRoutes);
 
 module.exports = app;
