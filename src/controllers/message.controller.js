@@ -4,12 +4,22 @@ const Message = require('../models/message.model');
 exports.sendMessage = async (req, res) => {
   try {
     const { senderId, receiverId, content } = req.body;
+
+    if (!senderId || !receiverId || !content) {
+      return res.status(400).json({
+        error: "Missing required fields",
+        received: { senderId, receiverId, content }
+      });
+    }
+
     const message = await Message.create({ senderId, receiverId, content });
     res.status(201).json(message);
   } catch (error) {
+    console.error('SendMessage Error:', error); // <-- important for logs
     res.status(500).json({ error: "Failed to send message" });
   }
 };
+
 
 // GET /messages/:userId
 exports.getMessages = async (req, res) => {
